@@ -3,7 +3,7 @@
 
 * The 2 **ulp** (*Eagle user script file*) one program/one include convert a **Eagle** *lbr's* version 6.xx file to a **KiCad** *lib/mod* file.  
 * This is part of the Eagle SCH/PCB to KiCad SCH/PCB conversion project hosted at https://github.com/lachlanA/eagle-to-kicad  
-* The main purpose of this githut extra doc's related to Eagle *LBR* to KiCad  lib/modules, and not over load the user with extra information about SCH/PCB conversion when they only wish to convert a Eagle *LBR* to KiCad.  
+* The main purpose of the extra doc's is not to over load the user with extra information about SCH/PCB conversion when they only wish to convert a Eagle *LBR* to KiCad.  
 	* Note: If you wish to do Eagle SCH and PCB conversion and also extract KiCad lib from the Eagle SCH/PCB files, or you don't have access to the Eagle lbr's,  
 	and need to extract them from Eagle's SCH/PCB, please see https://github.com/lachlanA/eagle-to-kicad  
 
