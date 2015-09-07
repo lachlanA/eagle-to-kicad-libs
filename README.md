@@ -1,14 +1,14 @@
 ###**Convert Eagle to KiCad lib's.**
 
 
-* This **ulp** (eagle user script file) and one **ulp** include file, conversion from **Eagle**  *lbr's* version 6.xx file to **KiCad** *lib/mod* files.  
-* This is part of the Eagle sch/PCB to KiCad sch/PCB conversion project hosted at https://github.com/lachlanA/eagle-to-kicad  
+* The 2 **ulp** (*Eagle user script file*) one program/one include convert a **Eagle** *lbr's* version 6.xx file to a **KiCad** *lib/mod* file.  
+* This is part of the Eagle SCH/PCB to KiCad SCH/PCB conversion project hosted at https://github.com/lachlanA/eagle-to-kicad  
 * The main purpose of this githut extra doc's related to Eagle *LBR* to KiCad  lib/modules, and not over load the user  
     with extra information about SCH/PCB conversion when they only wish to convert the Eagle *LBR* to KiCad.  
-	* Note: If you wish to do Eagle SCH and PCB conversion and also extract KiCad lib from the eagle sch/PCB files, or you don't have access to the Eagle lbr's,  
+	* Note: If you wish to do Eagle SCH and PCB conversion and also extract KiCad lib from the Eagle SCH/PCB files, or you don't have access to the Eagle lbr's,  
 	and need to extract them from Eagle's SCH/PCB, please see https://github.com/lachlanA/eagle-to-kicad  
 
-* Note this ULP will only build KiCad lib/mod from Eagle lbr file.  
+* Note this ULP will only build KiCad *lib/mod* from Eagle *lbr* file.  
 it will not build project files for KiCad or configure the library setup for KiCad.  
 you will need to manual do this in KiCad.
 
@@ -36,7 +36,7 @@ you will need to manual do this in KiCad.
 
 * **4:** A file requester window will open.  Using this, to select,find,or type the location of the ***eagle-lbr2kicad-1.0.ulp*** ULP you download from this website.
 
-***eagle-lbr2kicad-1.0.ulp*** which will convert the Eagle lbr file to a KiCad lib/mod file's.  The ***eagle-lbr2kicad-1.0.ulp*** window window will open with quite a few options. Just select OK for the moment.  And if *Murphy's Law  is sound asleep* we should have the target directory with all the new KiCad lib and mod files.
+***Eagle-lbr2kicad-1.0.ulp*** which will convert the Eagle lbr file to a KiCad lib/mod file's.  The ***eagle-lbr2kicad-1.0.ulp*** window window will open with quite a few options. Just select OK for the moment.  And if *Murphy's Law  is sound asleep* we should have the target directory with all the new KiCad lib and mod files.
 * NOTE: The converted files will be KiCad old format, and will be converted to the new format, when you first load them into KiCad.
 
 
