@@ -6,18 +6,11 @@
 * This is part of the Eagle SCH/PCB to KiCad SCH/PCB conversion project hosted at https://github.com/lachlanA/eagle-to-kicad  
 
 * The main purpose of the extra doc's is not to over load the user with extra information about SCH/PCB conversion, when they only need to convert a Eagle *LBR* to KiCad.  
-	* Note: If you wish to do Eagle SCH and PCB conversion, and also extract KiCad lib from the Eagle SCH/PCB files, or you don't have access to the Eagle lbr's,  
-	and need to extract them, please see https://github.com/lachlanA/eagle-to-kicad for the *ulp* which will do full conversion of SCH/PCB to KiCad  
+	* Note: If you wish to do Eagle SCH and PCB conversion, and also extract KiCad lib from the Eagle SCH/PCB files, or you don't have access to the Eagle lbr's, and need to extract them, please see https://github.com/lachlanA/eagle-to-kicad for the *ulp* which will do full conversion of SCH/PCB to KiCad  
 
-* Notes: 1: This ULP will only build KiCad *lib/mod* from Eagle *lbr* file.  
-it will not build project files for KiCad or configure the library setup for KiCad.  
-you will need to nanualy do this in KiCad.  
+* Notes: 1: This ULP will only build KiCad *lib/mod* from Eagle *lbr* file. It will not build project files for KiCad or configure the library setup for KiCad. You will need to nanualy do this in KiCad.  
 
-* The freeware version of Eagle has no limit on the size of the libary you can convert to KiCad lib/mod. You can get ealge from here:
-  [Eagle](http://www.cadsoftusa.com/download-eagle/)  
-  And KiCad beta for Windows from here: [Windows-xp,7,8,10](http://downloads.kicad-pcb.org/windows/)  
-  And final all other versions of [KiCad](http://kicad-pcb.org/download/)
-  
+* The freeware version of Eagle has no limit on the size of the libary you can convert to KiCad lib/mod. You can get ealge from here:  [Eagle](http://www.cadsoftusa.com/download-eagle/).  And KiCad beta for Windows from here: [Windows-xp,7,8,10](http://downloads.kicad-pcb.org/windows/).  And finaly all other versions of [KiCad](http://kicad-pcb.org/download/)
 
 * A number of example's of converted Eagle lib's have been provided in the *examples* directory if you wish a Eagle *LBR* file to be added to this *examples* please contact me.  
     Note: only public domain Eagle *lbr* will be added to the *examples* director.  
@@ -40,8 +33,8 @@ you will need to nanualy do this in KiCad.
 
 * **4:** A file requester window will open.  Using this, to select,find,or type the location of the ***eagle-lbr2kicad-1.0.ulp*** ULP you download from this website.
 
-* The ***eagle-lbr2kicad-1.0.ulp*** window will open with a number of options. Just select OK for the moment.  And if *Murphy's Law  is sound asleep* we should have the target directory with all the new KiCad lib and mod files.
-* NOTE: The converted files will be KiCad old format, and will be converted to the new format, when you first load them into KiCad.
+* The ***eagle-lbr2kicad-1.0.ulp*** window will open with a number of options. Just select OK for the moment.  And if *Murphy's Law  is sound asleep* we should have the target directory with the new KiCad *lib* and *mod* files.
+* NOTE: The converted files will be KiCad old format, and will be converted to the new format, when you first save them from KiCad.
 
 
 
