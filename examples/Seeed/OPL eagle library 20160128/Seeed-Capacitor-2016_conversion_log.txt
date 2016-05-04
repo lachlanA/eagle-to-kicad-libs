@@ -1,0 +1,10 @@
+
+#********** START OF eagle-lbr2kicad-1.0.ulp 2.1 03-05-2016 :06:07:41 LOG **********#
+    Conversion completed with no Messages
+#********** END OF eagle-lbr2kicad-1.0.ulp 2.1 03-05-2016 :06:07:41 LOG **********#
+
+
+#********** START OF eagle-lbr2kicad-1.0.ulp 2.1 03-05-2016 :10:31:08 LOG **********#
+    Conversion completed with no Messages
+#********** END OF eagle-lbr2kicad-1.0.ulp 2.1 03-05-2016 :10:31:08 LOG **********#
+

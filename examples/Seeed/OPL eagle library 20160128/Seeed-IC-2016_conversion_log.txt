@@ -1,0 +1,7 @@
+
+#********** START OF eagle-lbr2kicad-1.0.ulp 2.2 03-05-2016 :22:54:41 LOG **********#
+Missing Prefix Part =''				SSOP24-0.65-8.9X5.3MM					Seeed-IC-2016		M
+Missing Prefix Part =''				SOT-23-5					Seeed-IC-2016		M
+Missing Prefix Part =''				SOT-23					Seeed-IC-2016		M
+#********** END OF eagle-lbr2kicad-1.0.ulp 2.2 03-05-2016 :22:54:41 LOG **********#
+

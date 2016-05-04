@@ -1,0 +1,6 @@
+
+#********** START OF eagle-lbr2kicad-1.0.ulp 2.1 03-05-2016 :10:40:50 LOG **********#
+Missing Prefix Part =''				H8-2.54					Seeed-Connector -2016		M
+    Conversion completed with no Messages
+#********** END OF eagle-lbr2kicad-1.0.ulp 2.1 03-05-2016 :10:40:50 LOG **********#
+
