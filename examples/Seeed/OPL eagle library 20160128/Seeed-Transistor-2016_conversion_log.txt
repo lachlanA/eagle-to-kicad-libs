@@ -1,0 +1,6 @@
+
+#********** START OF eagle-lbr2kicad-1.0.ulp 2.2 03-05-2016 :23:19:36 LOG **********#
+Missing Prefix Part =''				SOT-23					Seeed-Transistor-2016		M
+    Conversion completed with no Messages
+#********** END OF eagle-lbr2kicad-1.0.ulp 2.2 03-05-2016 :23:19:36 LOG **********#
+

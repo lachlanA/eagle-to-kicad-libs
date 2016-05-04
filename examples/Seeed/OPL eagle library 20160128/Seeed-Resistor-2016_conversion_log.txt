@@ -1,0 +1,6 @@
+
+#********** START OF eagle-lbr2kicad-1.0.ulp 2.2 03-05-2016 :23:18:26 LOG **********#
+Missing Prefix Part =''				R0805					Seeed-Resistor-2016		M
+Missing Prefix Part =''				R0402					Seeed-Resistor-2016		M
+#********** END OF eagle-lbr2kicad-1.0.ulp 2.2 03-05-2016 :23:18:26 LOG **********#
+
