@@ -167,8 +167,8 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-real VERSION   = 2.3;
-string Version = "2.3";
+real VERSION   = 2.6;
+string Version = "2.6";
 
 int add_libnamePrefixToPartName = 0;
 
@@ -191,7 +191,7 @@ string aliasList = "";     // list of part alias's
 int wildCardPrefix = 1;  // 1 = pre add * wild card to $FPLIST footprint list names
 int wildPostfix  = 1; // 1 = post add * wild card to $FPLIST footprint list names
 
-int eaglePartToKiCadPartConversion = 1; // control's if we cobine footprints or not, 0 = combine, 1 = dont combine
+int eaglePartToKiCadPartConversion = 0; // control's if we cobine footprints or not, 0 = combine, 1 = dont combine
 
 int devicesetsCount = 0;
 int devicesCount = 0;
@@ -313,7 +313,7 @@ int layer_lut[] =
     21,         //LAYER_UNROUTED
     21,         //LAYER_DIMENSION
     21,         //LAYER_TPLACE
-    20,         //LAYER_BPLACE
+    21,         //LAYER_BPLACE
     21,         //LAYER_TORIGINS
     20,         //LAYER_BORIGINS
     21,         //LAYER_TNAMES
@@ -339,10 +339,10 @@ int layer_lut[] =
     21,         //LAYER_HOLES
     21,         //LAYER_MILLING
     21,         //LAYER_MEASURES
-    21,         //LAYER_DOCUMENT
+    24,         //LAYER_DOCUMENT
     21,         //LAYER_REFERENCE
-    21,         //LAYER_TDOCU
-    20,         //LAYER_BDOCU
+    24,         //LAYER_TDOCU
+    24,         //LAYER_BDOCU
     21,         //LAYER_NETS
     21,         //LAYER_BUSSES
     21,         //LAYER_PINS
@@ -381,7 +381,7 @@ int pad_lut[] =
     0x00008000 | 0x00800000 | 0x00080000,       //LAYER_TOP
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,   //inner layers
     0x00000001 | 0x00400000,                    //LAYER_BOTTOM
-    0x00008001 | 0x00A00000 | 0x00080000,       //LAYER_PADS
+    0x0000FFFF | 0x00C00000 | 0x000C0000,       //LAYER_PADS
     0x00008001 | 0x00800000 | 0x00400000,       //LAYER_VIAS
     0,              //LAYER_UNROUTED
     0,              //LAYER_DIMENSION
@@ -514,7 +514,7 @@ real unitConver(int unitConvertTo, int unitConvertFrom, real inputValue)
  */
 int layer_lookup(int layer)
 {
-    if (layer > 42) return 21;
+    if (layer > 42) return 24;
     return layer_lut[layer + 1];
 }
 
@@ -1747,7 +1747,7 @@ void write_kikad_def_alias( UL_DEVICE DEV, UL_GATE G, string symbolName, int cou
         printf("F1 \"%s\" %d %d %d %c %c %c %cNN\n", charstr_replace( ",/()", "_", symbolName), name_X, name_Y, 45, orient, 'I', hAlign, vAlign);  // Else no display
 
 
-    if ( DEV.package )
+    if ( DEV.package && eaglePartToKiCadPartConversion == 1 )
         switch( outPutFootPrint )
         {
         case 0: // Dont prefix lib name to footprint name
@@ -2014,8 +2014,10 @@ void write_kikad_lib( string fileName )
                                     nameString = str_replace( "?", "", nameString );
                                 }
                             }
-                            else // No ! place holder for variant name !
-                            {   // So just append the Variant named to the device name.
+                            else if (eaglePartToKiCadPartConversion)
+                            {
+                                // No ! place holder for variant name if not combining devices !
+                                // So just append the Variant named to the device name.
                                 nameString = nameString + ((DEV.name != "\'\'") ? DEV.name : "");
                             }
 
@@ -2515,7 +2517,7 @@ int mainDialog( string titleString )
         }
 
 
-        
+
         dlgVBoxLayout
         {
             dlgComboBox(showPinNames, drawPinName );
