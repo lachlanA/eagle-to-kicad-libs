@@ -1,6 +1,6 @@
 // Glboba defs for the 1 ulps
 
-string BUILD_DATE = "10-DEC-2016";
+string BUILD_DATE = "24-FEBC-2017";
 
 string cfg_LIBS = "Eagle.To.KiCad.Libs.LIBS";
 string cfg_conflictPartsLibsListsize = "Eagle.To.KiCad.Libs.conflictPartsLibsListsize";
