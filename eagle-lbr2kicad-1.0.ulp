@@ -824,6 +824,26 @@ void write_kikad_mod_pad(UL_PACKAGE PAC)
         printf("$EndPAD\n");
     }
 
+    if (holes_conv)
+        PAC.holes(H)
+    {
+        // write PAD start tag
+        printf("$PAD\n");
+
+        // pad shape
+        printf("Sh \"\" C %d %d 0 0 0\n", egl2ki(H.drill), egl2ki(H.drill));
+
+        printf("Dr %d %d %d \n", egl2ki(H.drill), 0, 0);
+
+        printf("At HOLE N 00C0FFFF\n");
+
+        printf("Ne 0 \"%s\"\n", "");    // should always be a null not signal name !
+
+        printf("Po %d %d \n", egl2ki(H.x), -egl2ki(H.y));
+
+        // write PAD end tag
+        printf("$EndPAD\n");
+	}
 }
 
 
@@ -890,20 +910,25 @@ void write_kicad_mod_shapes(UL_PACKAGE PAC)
 
         layer = layer_lookup(C.layer);
 
-        printf("DC %d %d %d %d %d %d\n", egl2ki(C.x) , -egl2ki(C.y) ,
-               egl2ki(C.x) + ((egl2ki(C.x) > 0) ? 1 : (-1)) *  egl2ki(C.radius / 2),
-               -egl2ki(C.y) - ((egl2ki(C.y) > 0) ? 1 : (-1)) * egl2ki(C.radius / 2), egl2ki(C.width / 2), layer);
+        printf("DC %d %d %d %d %d %d\n",
+			egl2ki(C.x),
+			-egl2ki(C.y),
+            egl2ki(C.x),
+            -egl2ki(C.y) - egl2ki(C.radius),
+			egl2ki(C.width),
+			layer);
     }
+	
     if (holes_conv)
         PAC.holes(H)
     {
-
+/*
         layer = 21;
 
         printf("DC %d %d %d %d %d %d\n",
                egl2ki(H.x), -egl2ki(H.y),
-               egl2ki(H.x) + ((egl2ki(H.x) > 0) ? 1 : (-1)) * egl2ki(H.drill / 4),
-               -egl2ki(H.y) - ((egl2ki(H.y) > 0) ? 1 : (-1)) * egl2ki(H.drill / 4),
+               egl2ki(H.x),
+               -egl2ki(H.y) - egl2ki(H.drill / 2),
                50, layer);
 
         printf("DS %d %d %d %d %d %d\n",
@@ -913,6 +938,7 @@ void write_kicad_mod_shapes(UL_PACKAGE PAC)
         printf("DS %d %d %d %d %d %d\n",
                egl2ki(H.x), -egl2ki(H.y - (H.drill / 2)),
                egl2ki(H.x), -egl2ki(H.y + (H.drill / 2)), 50, layer);
+*/
     }
 
     //converting (always from wires)arcs ----------------------------------------------------
@@ -1040,8 +1066,11 @@ void write_kicad_mod_text(UL_PACKAGE PAC)
         textCt++;
     } //PAC.text
 
-
-    textnum = 0;
+	if( nameCt )
+		printf("%s", NAME );
+		
+	if( valueCt )
+		printf("%s", VALUE );
 
     PAC.texts(T)
     {
@@ -1086,22 +1115,6 @@ void write_kicad_mod_text(UL_PACKAGE PAC)
             break;
         }
 
-        // check for part prefix/>NAME
-        if( textnum == 0 )
-        {
-            if( nameCt )
-                printf("%s", NAME );
-            textnum++;
-            continue;
-        }
-        if( textnum == 1 )
-        {
-            if( valueCt )
-                printf("%s", VALUE );
-            textnum++;
-            continue;
-        }
-
         if (strupr(T.value) == ">NAME" || strupr(T.value) == ">VALUE" )
             continue;
         else
@@ -1115,7 +1128,6 @@ void write_kicad_mod_text(UL_PACKAGE PAC)
                    2, egl2ki(T.x + xoffs), -egl2ki(T.y + yoffs),
                    size, size,
                    int((abs(T.angle)) * 10), textWidth, T.mirror ? 'M' : 'N', layer_lut[T.layer], T.value);
-            textnum++;
         }
     }
 }
