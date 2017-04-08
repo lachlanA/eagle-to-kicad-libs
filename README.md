@@ -1,4 +1,4 @@
-###**Convert Eagle to KiCad lib's.**
+### **Convert Eagle to KiCad lib's.**
 
 
 * This **ulp** (*Eagle user script file*) along with one include file will convert a **Eagle** *lbr's* version file to a **KiCad** *lib/mod* file.  
@@ -14,14 +14,14 @@
 
 * A number of example's of converted Eagle lib's have been provided in the *examples* directory if you wish a Eagle *LBR* file to be added to this *examples* please contact me.  
     Note: only public domain Eagle *lbr* will be added to the *examples* director.  
-###Installing.
+### Installing.
 * Download the zip file, (*click on the Button to the your bottom right on this page*. **Download ZIP**) And unzip using your favorite zip program to your target directory. *OR* if your prefer git
 
 			git clone https://github.com/lachlanA/eagle-to-kicad-libs.git  
 
 * ***eagle-lbr2kicad-1.0.ulp***...............  Convert Eagle lbr to KiCad lib/mod  
 * ***eagle_to_kicad_include.inc*** ........  Include file used above *ulp* ULP's  
-####HOW TO RUN THE ULP'S 
+#### HOW TO RUN THE ULP'S 
  
  **WARNING Always backup your Eagle SCH/PCB/LBR files before running this program!**  
  
