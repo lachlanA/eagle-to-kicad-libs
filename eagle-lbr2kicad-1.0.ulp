@@ -16,7 +16,12 @@
 /*
  * CHANGELOG=(dd.mm.yyyy)===============================================
  *
- * 24.02.2017  Inc version number to 2.8
+ * 07-04.2017  Inc version number to 2.9
+ *             Fixes problems with converting circles, holes and text
+ *             Thanks to Paul Andrews, https://github.com/judge2005
+ *             Remove /022  from file, and do spelling fix's, Thanks to  Nathan Seidle, https://github.com/nseidle
+ *
+ * 24.02.2017  Inc version number to 2.9
  *             remove required 6.000, see if that fixes problem with Eagle 8.0
  *             set the default to not combine footprint (eaglePartToKiCadPartConversion=1), as this gives too many problems
  *             Thanks to: Lachlan laudasusa (at) gmail.com
@@ -179,8 +184,8 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-real VERSION   = 2.8;
-string Version = "2.8";
+real VERSION   = 2.9;
+string Version = "2.9";
 
 int add_libnamePrefixToPartName = 0;
 
