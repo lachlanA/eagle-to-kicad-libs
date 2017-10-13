@@ -17,6 +17,9 @@
  * CHANGELOG=(dd.mm.yyyy)===============================================
  *
  * 18.07.2017  Fix translation of irregular pads: Fix polygon and layer translation. Fix text alignment translation.
+ *             Thanks to Paul Andrews, https://github.com/judge2005
+ *             Inc version number
+ *             
  *
  * 20-04.2017  Fixes problems double "" not being escape in "T " string
  *             Inc version number to 3.0
@@ -189,8 +192,8 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-real VERSION   = 3.0;
-string Version = "3.0";
+real VERSION   = 3.1;
+string Version = "3.1";
 
 int add_libnamePrefixToPartName = 0;
 
