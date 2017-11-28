@@ -16,8 +16,6 @@
 /*
  * CHANGELOG=(dd.mm.yyyy)===============================================
  *
- * 18.07.2017  Fix translation of irregular pads: Fix polygon and layer translation. Fix text alignment translation.
- *
  * 20-04.2017  Fixes problems double "" not being escape in "T " string
  *             Inc version number to 3.0
  *
@@ -856,6 +854,23 @@ void write_kikad_mod_pad(UL_PACKAGE PAC)
 	}
 }
 
+real rotatedRect[];
+
+void rotateRectangle(UL_RECTANGLE r) {
+	real rad = r.angle * PI * 2.0 / 360.0;
+	real centerX = r.x1 + (r.x2 - r.x1) / 2;
+	real centerY = r.y1 + (r.y2 - r.y1) / 2;
+	
+	/*
+	 * newx = cos(angle) * oldx - sin(angle) * oldy ; 
+	 * newy = sin(angle) * oldx + cos(angle) * oldy ;
+	 */
+	 
+	rotatedRect[0] = (r.x1 - centerX) * cos(rad) - (r.y1 - centerY) * sin(rad) + centerX;
+	rotatedRect[1] = (r.x2 - centerX) * cos(rad) - (r.y2 - centerY) * sin(rad) + centerX;
+	rotatedRect[2] = (r.x1 - centerX) * sin(rad) + (r.y1 - centerY) * cos(rad) + centerY;
+	rotatedRect[3] = (r.x2 - centerX) * sin(rad) + (r.y2 - centerY) * cos(rad) + centerY;
+}
 
 //------------------------------------------------------
 // shape conversion
@@ -879,14 +894,16 @@ void write_kicad_mod_shapes(UL_PACKAGE PAC)
     {
         layer =  layer_lookup(R.layer);
 
+		rotateRectangle(R);
+		
         printf("DS %d %d %d %d %d %d\n",
-               egl2ki(R.x1), -egl2ki(R.y1), egl2ki(R.x2), -egl2ki(R.y1), RECT_WIDTH, layer);
+               egl2ki(rotatedRect[0]), -egl2ki(rotatedRect[2]), egl2ki(rotatedRect[1]), -egl2ki(rotatedRect[2]), RECT_WIDTH, layer);
         printf("DS %d %d %d %d %d %d\n",
-               egl2ki(R.x2), -egl2ki(R.y1), egl2ki(R.x2), -egl2ki(R.y2), RECT_WIDTH, layer);
+               egl2ki(rotatedRect[1]), -egl2ki(rotatedRect[2]), egl2ki(rotatedRect[1]), -egl2ki(rotatedRect[3]), RECT_WIDTH, layer);
         printf("DS %d %d %d %d %d %d\n",
-               egl2ki(R.x1), -egl2ki(R.y2), egl2ki(R.x2), -egl2ki(R.y2), RECT_WIDTH, layer);
+               egl2ki(rotatedRect[0]), -egl2ki(rotatedRect[3]), egl2ki(rotatedRect[1]), -egl2ki(rotatedRect[3]), RECT_WIDTH, layer);
         printf("DS %d %d %d %d %d %d\n",
-               egl2ki(R.x1), -egl2ki(R.y1), egl2ki(R.x1), -egl2ki(R.y2), RECT_WIDTH, layer);
+               egl2ki(rotatedRect[0]), -egl2ki(rotatedRect[2]), egl2ki(rotatedRect[0]), -egl2ki(rotatedRect[3]), RECT_WIDTH, layer);
     }
 
     // converting wires---------------------------------------------------------------------
@@ -2205,8 +2222,8 @@ void write_kikad_lib( string fileName )
 
 
                         // Scan through pins looking for visable or not visable status
-                        int pinNameVisable = 0;
-                        int pinNumberVisable = 0;
+                        int pinNameVisible = 0;
+                        int pinNumberVisible = 0;
                         int pinCt = 0;
                         int pinPower = 0;
 
@@ -2224,10 +2241,10 @@ void write_kikad_lib( string fileName )
                                 else
                                 {
                                     if ( P.visible == 1 || P.visible == 3 )
-                                        pinNameVisable++;
+                                        pinNumberVisible++;
 
                                     if ( P.visible == 2 || P.visible == 3 )
-                                        pinNumberVisable++;
+                                        pinNameVisible++;
                                 }
                             }
                         }
@@ -2267,7 +2284,7 @@ void write_kikad_lib( string fileName )
                             break;
 
                         case 1:  // Never show pin numbers? KiCad only has global control!
-                            if( pinNumberVisable )
+                            if( pinNumberVisible )
                                 drawPinNumberStr = "Y";
                             break;
 
@@ -2285,7 +2302,7 @@ void write_kikad_lib( string fileName )
                             break;
 
                         case 1:   // Show pin name base on Eagle symbol? KiCad only has global control!
-                            if( pinNameVisable )
+                            if( pinNameVisible )
                                 drawPinNameStr = "Y";
                             break;
 
