@@ -758,12 +758,12 @@ void write_kikad_mod_idx(UL_LIBRARY LIB)
  */
 void write_kikad_mod_pad(UL_PACKAGE PAC)
 {
-    char shp = 'R';
-    string signal, type = "STD";
-    int angle = 0, dx, dy, drill, layset;
-
     PAC.contacts(CN)
     {
+		char shp = 'R';
+		string signal, type = "STD";
+		int angle = 0, dx, dy, drill, layset;
+
         // write PAD start tag
         printf("$PAD\n");
 
