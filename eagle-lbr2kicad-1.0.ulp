@@ -762,7 +762,7 @@ void write_kikad_mod_pad(UL_PACKAGE PAC)
     {
 		char shp = 'R';
 		string signal, type = "STD";
-		int angle = 0, dx, dy, drill, layset;
+		int angle = 0, dx, dy, drill, layset, xoff, yoff;
 
         // write PAD start tag
         printf("$PAD\n");
@@ -789,6 +789,10 @@ void write_kikad_mod_pad(UL_PACKAGE PAC)
         if (CN.pad)
         {
             type = "STD";
+			xoff = 0;
+			yoff = 0;
+			dx = CN.pad.diameter[LAYER_TOP];
+			
             if (CN.pad.shape[LAYER_TOP] == PAD_SHAPE_ROUND )
             {
                 shp = 'C';
@@ -805,13 +809,20 @@ void write_kikad_mod_pad(UL_PACKAGE PAC)
                 angle = CN.pad.angle + 90;
                 dy = CN.pad.diameter[LAYER_TOP] * 2;
             }
+            if (CN.pad.shape[LAYER_TOP] == PAD_SHAPE_OFFSET )
+            {
+                shp = 'O';
+                angle = CN.pad.angle + 90;
+                dy = CN.pad.diameter[LAYER_TOP] * 2;
+				yoff = dx/2;
+            }
             if (CN.pad.shape[LAYER_TOP] == PAD_SHAPE_SQUARE )
             {
                 shp = 'R';
                 dy = CN.pad.diameter[LAYER_TOP];
             }
 
-            dx = CN.pad.diameter[LAYER_TOP];
+            
             drill = CN.pad.drill;
             layset = LAYER_PADS ;
 
@@ -820,7 +831,7 @@ void write_kikad_mod_pad(UL_PACKAGE PAC)
         // pad shape
         printf("Sh \"%s\" %c %d %d %d %d %d\n", CN.name, shp, egl2ki(dx), egl2ki(dy), 0, 0, angle * 10);
 
-        printf("Dr %d %d %d \n", egl2ki(drill), 0, 0);
+        printf("Dr %d %d %d \n", egl2ki(drill), egl2ki(xoff), egl2ki(yoff));
 
         printf("At %s N %08X\n", type, pad_lut[layset]);
 
