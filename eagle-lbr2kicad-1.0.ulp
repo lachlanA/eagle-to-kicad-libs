@@ -16,11 +16,6 @@
 /*
  * CHANGELOG=(dd.mm.yyyy)===============================================
  *
- * 18.07.2017  Fix translation of irregular pads: Fix polygon and layer translation. Fix text alignment translation.
- *             Thanks to Paul Andrews, https://github.com/judge2005
- *             Inc version number
- *             
- *
  * 20-04.2017  Fixes problems double "" not being escape in "T " string
  *             Inc version number to 3.0
  *
@@ -763,12 +758,12 @@ void write_kikad_mod_idx(UL_LIBRARY LIB)
  */
 void write_kikad_mod_pad(UL_PACKAGE PAC)
 {
-    char shp = 'R';
-    string signal, type = "STD";
-    int angle = 0, dx, dy, drill, layset;
-
     PAC.contacts(CN)
     {
+		char shp = 'R';
+		string signal, type = "STD";
+		int angle = 0, dx, dy, drill, layset, xoff, yoff;
+
         // write PAD start tag
         printf("$PAD\n");
 
@@ -794,6 +789,10 @@ void write_kikad_mod_pad(UL_PACKAGE PAC)
         if (CN.pad)
         {
             type = "STD";
+			xoff = 0;
+			yoff = 0;
+			dx = CN.pad.diameter[LAYER_TOP];
+			
             if (CN.pad.shape[LAYER_TOP] == PAD_SHAPE_ROUND )
             {
                 shp = 'C';
@@ -810,13 +809,20 @@ void write_kikad_mod_pad(UL_PACKAGE PAC)
                 angle = CN.pad.angle + 90;
                 dy = CN.pad.diameter[LAYER_TOP] * 2;
             }
+            if (CN.pad.shape[LAYER_TOP] == PAD_SHAPE_OFFSET )
+            {
+                shp = 'O';
+                angle = CN.pad.angle + 90;
+                dy = CN.pad.diameter[LAYER_TOP] * 2;
+				yoff = dx/2;
+            }
             if (CN.pad.shape[LAYER_TOP] == PAD_SHAPE_SQUARE )
             {
                 shp = 'R';
                 dy = CN.pad.diameter[LAYER_TOP];
             }
 
-            dx = CN.pad.diameter[LAYER_TOP];
+            
             drill = CN.pad.drill;
             layset = LAYER_PADS ;
 
@@ -825,7 +831,7 @@ void write_kikad_mod_pad(UL_PACKAGE PAC)
         // pad shape
         printf("Sh \"%s\" %c %d %d %d %d %d\n", CN.name, shp, egl2ki(dx), egl2ki(dy), 0, 0, angle * 10);
 
-        printf("Dr %d %d %d \n", egl2ki(drill), 0, 0);
+        printf("Dr %d %d %d \n", egl2ki(drill), egl2ki(xoff), egl2ki(yoff));
 
         printf("At %s N %08X\n", type, pad_lut[layset]);
 
@@ -859,6 +865,23 @@ void write_kikad_mod_pad(UL_PACKAGE PAC)
 	}
 }
 
+real rotatedRect[];
+
+void rotateRectangle(UL_RECTANGLE r) {
+	real rad = r.angle * PI * 2.0 / 360.0;
+	real centerX = r.x1 + (r.x2 - r.x1) / 2;
+	real centerY = r.y1 + (r.y2 - r.y1) / 2;
+	
+	/*
+	 * newx = cos(angle) * oldx - sin(angle) * oldy ; 
+	 * newy = sin(angle) * oldx + cos(angle) * oldy ;
+	 */
+	 
+	rotatedRect[0] = (r.x1 - centerX) * cos(rad) - (r.y1 - centerY) * sin(rad) + centerX;
+	rotatedRect[1] = (r.x2 - centerX) * cos(rad) - (r.y2 - centerY) * sin(rad) + centerX;
+	rotatedRect[2] = (r.x1 - centerX) * sin(rad) + (r.y1 - centerY) * cos(rad) + centerY;
+	rotatedRect[3] = (r.x2 - centerX) * sin(rad) + (r.y2 - centerY) * cos(rad) + centerY;
+}
 
 //------------------------------------------------------
 // shape conversion
@@ -882,14 +905,16 @@ void write_kicad_mod_shapes(UL_PACKAGE PAC)
     {
         layer =  layer_lookup(R.layer);
 
+		rotateRectangle(R);
+		
         printf("DS %d %d %d %d %d %d\n",
-               egl2ki(R.x1), -egl2ki(R.y1), egl2ki(R.x2), -egl2ki(R.y1), RECT_WIDTH, layer);
+               egl2ki(rotatedRect[0]), -egl2ki(rotatedRect[2]), egl2ki(rotatedRect[1]), -egl2ki(rotatedRect[2]), RECT_WIDTH, layer);
         printf("DS %d %d %d %d %d %d\n",
-               egl2ki(R.x2), -egl2ki(R.y1), egl2ki(R.x2), -egl2ki(R.y2), RECT_WIDTH, layer);
+               egl2ki(rotatedRect[1]), -egl2ki(rotatedRect[2]), egl2ki(rotatedRect[1]), -egl2ki(rotatedRect[3]), RECT_WIDTH, layer);
         printf("DS %d %d %d %d %d %d\n",
-               egl2ki(R.x1), -egl2ki(R.y2), egl2ki(R.x2), -egl2ki(R.y2), RECT_WIDTH, layer);
+               egl2ki(rotatedRect[0]), -egl2ki(rotatedRect[3]), egl2ki(rotatedRect[1]), -egl2ki(rotatedRect[3]), RECT_WIDTH, layer);
         printf("DS %d %d %d %d %d %d\n",
-               egl2ki(R.x1), -egl2ki(R.y1), egl2ki(R.x1), -egl2ki(R.y2), RECT_WIDTH, layer);
+               egl2ki(rotatedRect[0]), -egl2ki(rotatedRect[2]), egl2ki(rotatedRect[0]), -egl2ki(rotatedRect[3]), RECT_WIDTH, layer);
     }
 
     // converting wires---------------------------------------------------------------------
@@ -2208,8 +2233,8 @@ void write_kikad_lib( string fileName )
 
 
                         // Scan through pins looking for visable or not visable status
-                        int pinNameVisable = 0;
-                        int pinNumberVisable = 0;
+                        int pinNameVisible = 0;
+                        int pinNumberVisible = 0;
                         int pinCt = 0;
                         int pinPower = 0;
 
@@ -2227,10 +2252,10 @@ void write_kikad_lib( string fileName )
                                 else
                                 {
                                     if ( P.visible == 1 || P.visible == 3 )
-                                        pinNameVisable++;
+                                        pinNumberVisible++;
 
                                     if ( P.visible == 2 || P.visible == 3 )
-                                        pinNumberVisable++;
+                                        pinNameVisible++;
                                 }
                             }
                         }
@@ -2270,7 +2295,7 @@ void write_kikad_lib( string fileName )
                             break;
 
                         case 1:  // Never show pin numbers? KiCad only has global control!
-                            if( pinNumberVisable )
+                            if( pinNumberVisible )
                                 drawPinNumberStr = "Y";
                             break;
 
@@ -2288,7 +2313,7 @@ void write_kikad_lib( string fileName )
                             break;
 
                         case 1:   // Show pin name base on Eagle symbol? KiCad only has global control!
-                            if( pinNameVisable )
+                            if( pinNameVisible )
                                 drawPinNameStr = "Y";
                             break;
 
